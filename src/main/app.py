@@ -18,9 +18,27 @@ def main():
         format_data('data\\in\\books.csv', 'data\\out\\books_updated.csv')
         print("-- Data formatting finished --")
 
+    # https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
+    config = {
+        'user': 'root',
+        'password': 'Ro93Jo98@',
+        'database': 'demodatabase',
+        'auth_plugin': 'mysql_native_password'
+    }
+
     # Test Database connection
-    print("-- Testing Database Connection --")
-    cnx = mysql.connector.connect(user='root', password='Ro93Jo98@', host='127.0.0.1', database='demodatabase')
-    cnx.close()
+    try:
+        print("-- Testing Database Connection --")
+        cnx = mysql.connector.connect(**config)
+        print("-- Connection Successful --")
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+    else:
+        cnx.close()
 
 main()

@@ -8,7 +8,7 @@ def printWelcomeMessage():
     print("***********************************************")
 
 def printHelp():
-    print("Available commands:" + "\nhelp" + "\nsearch" + "\nquit")
+    print("\nAvailable commands:" + "\nhelp" + "\nsearch" + "\nquit\n")
 
 
 def printSearchMenuPrompt():
@@ -16,7 +16,7 @@ def printSearchMenuPrompt():
     printSearchMenuHelp()
 
 def printSearchMenuHelp():
-    print("Available commands:" + "\ntitle" + "\nauthor" + "\ngenre" + "\npublisher" + "\nhelp" + "\nback")
+    print("\nAvailable commands:" + "\ntitle" + "\nauthor" + "\ngenre" + "\npublisher" + "\nhelp" + "\nback\n")
     printSearchMenuExample()
 
 def printSearchMenuExample():
@@ -24,4 +24,4 @@ def printSearchMenuExample():
     print("search_attribute>: title")
     print("title>: Data Smart")
     print("\nResults:")
-    print("Title: Data Smart | Author: John Foreman | Genre: data_science | Pages: 235 | Publisher: Wiley")
+    print("Title: Data Smart | Author: John Foreman | Genre: data_science | Pages: 235 | Publisher: Wiley\n")

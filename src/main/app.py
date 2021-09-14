@@ -1,23 +1,28 @@
+import sys
 import mysql.connector
 from mysql.connector import errorcode
-import sys
+from tabulate import tabulate
 from library_prompter import *
 from format_books import *
 
 username = "admin"
 password = "password"
 
-def main():
-    # Grab the runtime mode as a command line argument
-    # (No argument) or 0 -> no data preprocessing
-    # 1 -> Run data preprocessing code
-    args = sys.argv[1:]
+def login():
+    finished = False
+    while not finished:
+        print("Type exit for username and leave password empty to quit program.")
+        user = input("username>: ")
+        pw = input("password>: ")
+        if user == username and pw == password:
+            print(" ")
+            finished = True
+        elif user == "exit":
+            sys.exit()
+        else:
+            print("Invalid Credentials. Try again.")
 
-    if len(args) != 0 and args[0] == "1":
-        # Preprocess data from data\in folder and output to data\out folder
-        format_data('data\\in\\books.csv', 'data\\out\\books_updated.csv')
-        print("-- Data formatting finished --")
-
+def mysql_connection():
     # https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
     config = {
         'user': 'root',
@@ -30,7 +35,8 @@ def main():
     try:
         print("-- Testing Database Connection --")
         cnx = mysql.connector.connect(**config)
-        print("-- Connection Successful --")
+        print("-- Connection Successful --\n")
+        return cnx
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -40,5 +46,71 @@ def main():
             print(err)
     else:
         cnx.close()
+
+def searchMenu():
+    printSearchMenuPrompt()
+    finished = False
+    while not finished:
+        command = input("search_attribute>: ")
+
+        if command == "title":
+            queryDB("title")
+        elif command == "author":
+            queryDB("author")
+        elif command == "genre":
+            queryDB("genre")
+        elif command == "publisher":
+            queryDB("publisher")
+        elif command == "help":
+            printSearchMenuHelp()
+        elif command == "back":
+            finished = True
+        else:
+            print("Unexpected command: Type \"help\" to relist possible commands")
+
+def queryDB(search_attribute):
+    nput = input(f"{search_attribute}>: ")
+    cursor = cnx.cursor()
+    query = ("SELECT * FROM books WHERE " + search_attribute + " LIKE \"%" + nput + "%\"")
+    cursor.execute(query)
+    header = list(cursor.column_names)
+    table = list()
+
+    for result in cursor:
+        table.append(result)
+
+    print(tabulate(table, headers=header, tablefmt="pretty"))
+
+    cursor.close()
+
+
+def main():
+    login()
+
+    # For formatted table output: https://pypi.org/project/tabulate/
+    global cnx
+    cnx = mysql_connection()
+
+    printWelcomeMessage()
+
+    finished = False
+    while not finished:
+        printHelp()
+        command = input(">: ")
+
+        if command == "help":
+            # Will print when looped, (finished set to false is to help python compile, not meant to do anything)
+            finished = False
+        elif command == "search":
+            searchMenu()
+        elif command == "quit":
+            finished = True
+        else:
+            print("Unexpected command: Type \"help\" to relist possible commands")
+
+    cnx.close()
+    print("Closing program")
+    sys.exit()
+
 
 main()

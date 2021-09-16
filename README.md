@@ -2,18 +2,22 @@
 A digital library cli application in python to practice connectivity with MySQ. The data is a collection of books along with meta data about each book such as title, author, publisher, etc. Python was used for data formatting before insertion into the MySQL database. The application allows the user to query the db for a READ ONLY view of the books and their related information.
 
 ### How to Run
-After cloning the repository run the following python file with no arguments or an argument of 0:
+After cloning the repository, run the following file:
 ```
 py src/main/app.py
 ```
-or
+To do a hard reset, do the following:
+1. Delete the books_updated.csv file within the data/out directory.
+2. Format the book.csv file to accommodate for empty columns by running:
 ```
-py src/main/app.py 0
+py src/main/format_books.py 
 ```
-To generate the formatted book data from the original file from the data/in folder, run the command below with an argument of 1.
+3. Load the data to your local MySQL Database by running:  
+(Check the file for the database connection configuration!)
 ```
-py src/main/app.py 1
+py src/main/load_books.py 
 ```
+4. Finally run the main app python file listed at the top like normal. 
 ### Software Stack
 Software | Version#
 -------- | --------

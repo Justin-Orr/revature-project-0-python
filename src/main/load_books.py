@@ -33,14 +33,14 @@ def mysql_connection():
 
 def create_books_table():
     created = False
-    table_description = """CREATE TABLE book 
+    table_description = """CREATE TABLE books 
     (title VARCHAR(255),
     author VARCHAR(255),
     genre VARCHAR(255),
     pages INT,
     publisher VARCHAR(255))"""
     try:
-        print("Attempting to create table \"{}\": ".format("book"), end='')
+        print("Attempting to create table \"{}\": ".format("books"), end='')
         cursor.execute(table_description)
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
@@ -63,7 +63,7 @@ def load_books_data():
                 i+=1
                 continue
             book_data = (book_entry[0], book_entry[1], book_entry[2], book_entry[3], book_entry[4])
-            query = "INSERT INTO book (title, author, genre, pages, publisher) VALUES (%s, %s, %s, %s, %s)"
+            query = "INSERT INTO books (title, author, genre, pages, publisher) VALUES (%s, %s, %s, %s, %s)"
             cursor.execute(query, book_data)
     cnx.commit()
     print("-- Books Loaded Successfully --")

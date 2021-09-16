@@ -17,8 +17,8 @@ py src/main/format_books.py
 ```
 py src/main/load_books.py 
 ```
-4. Finally run the main app python file listed at the top like normal. 
-###Fake Login Credentials
+4. Finally, run the main app python file listed at the top like normal.   
+### Fake Login Credentials
 ```
 username: admin
 password: password

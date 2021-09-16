@@ -3,7 +3,6 @@ import mysql.connector
 from mysql.connector import errorcode
 from tabulate import tabulate
 from library_prompter import *
-from format_books import *
 
 username = "admin"
 password = "password"

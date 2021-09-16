@@ -11,13 +11,13 @@ def flip(s):
     return s
 
 def write_to_file(s):
-  with open('data\\out\\books_updated.csv', mode='a', newline='') as updated_file:
+  with open('../../data/out/books_updated.csv', mode='a', newline='') as updated_file:
     book_writer = csv.writer(updated_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     for entry in s:
       book_writer.writerow(entry)
 
-def format_data():
-  with open('data\\in\\books.csv') as csv_file:
+def main():
+  with open('../../data/in/books.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     s = []
     line_num = 0
@@ -27,3 +27,5 @@ def format_data():
         t.append(flip(token))
       s.append(t)
     write_to_file(s)
+
+main()

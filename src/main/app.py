@@ -39,9 +39,12 @@ def mysql_connection():
         return cnx
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
+            print("-- Connection Failed --")
+            print("Something is wrong with your user name or password (Check your database configuration)\n")
+
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
+            print("-- Connection Failed --")
+            print("Database does not exist (Check your database configuration)\n")
         else:
             print(err)
     else:
@@ -90,6 +93,9 @@ def main():
     # For formatted table output: https://pypi.org/project/tabulate/
     global cnx
     cnx = mysql_connection()
+    if cnx is None:
+        print("-- Connection to Database not established: Closing Program --")
+        sys.exit(1)
 
     printWelcomeMessage()
 
@@ -108,7 +114,8 @@ def main():
         else:
             print("Unexpected command: Type \"help\" to relist possible commands")
 
-    cnx.close()
+    if cnx is not None:
+        cnx.close()
     print("Closing program")
     sys.exit()
 
